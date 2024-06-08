@@ -18,19 +18,26 @@ struct LandmarkList: View {
     }
     
     var body: some View {
-        List {
-            Toggle(isOn: $showFavoritesOnly) {
-                Text("Favorites only")
-            }
-            ForEach(filteredLandmarks) { landmark in
-                NavigationLink {
-                    LandmarkDetail(landmark: landmark)
-                } label: {
-                    LandmarkRow(landmark: landmark)
+        NavigationSplitView {
+            List {
+                Toggle(isOn: $showFavoritesOnly) {
+                    Text("Favorites only")
+                }
+                ForEach(filteredLandmarks) { landmark in
+                    NavigationLink {
+                        LandmarkDetail(landmark: landmark)
+                    } label: {
+                        LandmarkRow(landmark: landmark)
+                    }
                 }
             }
+            .animation(.default, value: filteredLandmarks)
+                .navigationTitle("Landmarks")
+        } detail: {
+            Text("Select a Landmark")
+            // Помогает решить проблему с прыгающим navigation title
+                .navigationBarTitleDisplayMode(.inline)
         }
-        .animation(.default, value: filteredLandmarks)
     }
 }
 

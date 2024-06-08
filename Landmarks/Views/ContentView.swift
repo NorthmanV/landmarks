@@ -8,16 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    enum Tab {
+        case featured
+        case list
+    }
+    
+    @State private var selection: Tab = .featured
+    
     var body: some View {
-        NavigationSplitView {
+        TabView(selection: $selection) {
+            CategoryHome()
+                .tabItem {
+                    Label("Featured", systemImage: "star")
+                }
+                .tag(Tab.featured)
+            
             LandmarkList()
-                .navigationTitle("Landmarks")
-        } detail: {
-            Text("Select a Landmark")
-            // Помогает решить проблему с прыгающим navigation title
-                .navigationBarTitleDisplayMode(.inline)
+                .tabItem {
+                    Label("List", systemImage: "list.bullet")
+                }
+                .tag(Tab.list)
         }
-
     }
 }
 
