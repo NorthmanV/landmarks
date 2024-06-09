@@ -11,6 +11,8 @@ import Foundation
 class ModelData {
     var landmarks: [Landmark] = load(fileName: "landmarkData.json")
     let hikes: [Hike] = load(fileName: "hikeData.json")
+    var profile = Profile.default
+    
     var categories: [String: [Landmark]] {
         Dictionary(
             grouping: landmarks,
