@@ -11,15 +11,39 @@ import MapKit
 struct MapView: View {
     let coordinate: CLLocationCoordinate2D
     
+    @AppStorage("MapView.zoom")
+    private var zoom: Zoom = .medium
+    
     private var region: MKCoordinateRegion{
         MKCoordinateRegion(
             center: coordinate,
-            span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
+            span: MKCoordinateSpan(latitudeDelta: zoom.delta, longitudeDelta: zoom.delta)
         )
     }
     
     var body: some View {
         Map(position: .constant(.region(region)))
+    }
+}
+
+extension MapView {
+    
+    enum Zoom: String, CaseIterable, Identifiable {
+        case near = "Near"
+        case medium = "Medium"
+        case far = "Far"
+        
+        var id: Zoom {
+            self
+        }
+        
+        var delta: CLLocationDegrees {
+            switch self {
+            case .near: return 0.02
+            case .medium: return 0.2
+            case .far: return 2
+            }
+        }
     }
 }
 
